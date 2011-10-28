@@ -8,6 +8,9 @@
 #ifndef STRUCTURES_H_
 #define STRUCTURES_H_
 
+#define TYPE_NODE 0
+#define TYPE_LEAF 1
+
 #include <stdint.h>
 #include <stdio.h>
 
@@ -15,69 +18,34 @@
  *          Element           *
  ******************************/
 struct Element;
+struct Element_op;
+struct Element_data;
 
-int save(struct Element* this, FILE* file)
-{
-  return 0;
-};
+void
+init_element (struct Element*);
 
-int load(struct Element* this, FILE* file)
-{
-  return 0;
-}
+struct Node*
+new_node();
 
-struct Element_op
-{
-  int (*save)(struct Element*, FILE*);
-  int (*load)(struct Element*, FILE*);
-};
+struct Leaf*
+new_leaf();
 
-struct Element_data
-{
-  uint8_t  type_id;
-  struct Element* parent;
-  char*    text;
-};
+int
+save (struct Element*, FILE*);
 
-struct Element
-{
-  struct Element_op* ops;
-  struct Element_data* data;
-};
+int
+load (struct Element*, FILE*);
 
 /***************************
  *            Node         *
  **************************/
 struct Node;
-
-struct Node_data
-{
-  struct Element* yes;
-  struct Element* no;
-};
-
-struct Node
-{
-  struct Element_op*   ops;
-  struct Element_data* data;
-  struct Node_data*    ndata;
-};
+struct Node_data;
 
 /*********************
  *       Leaf        *
  ********************/
 struct Leaf;
-
-struct Leaf_data
-{
-
-};
-
-struct Leaf
-{
-  struct Element_op*   ops;
-  struct Element_data* data;
-  struct Leaf_data*    ldata;
-};
+struct Leaf_data;
 
 #endif /* STRUCTURES_H_ */
