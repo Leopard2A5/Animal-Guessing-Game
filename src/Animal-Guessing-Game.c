@@ -10,8 +10,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "structures.h"
 
-int main(void) {
-	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
-	return EXIT_SUCCESS;
+int
+main(void)
+{
+  puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
+  return EXIT_SUCCESS;
 }
