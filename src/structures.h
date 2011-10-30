@@ -23,9 +23,6 @@ struct Element_data;
 int
 save (struct Element*, FILE*);
 
-int
-load (struct Element*, FILE*);
-
 void
 delete (struct Element*);
 
@@ -38,6 +35,9 @@ init_element (struct Element*);
 struct Node;
 struct Node_data;
 
+int
+load_node (struct Element*, FILE*);
+
 struct Node*
 new_node();
 
@@ -46,6 +46,9 @@ new_node();
  */
 struct Leaf;
 struct Leaf_data;
+
+int
+load_leaf (struct Element*, FILE*);
 
 struct Leaf*
 new_leaf();

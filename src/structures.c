@@ -47,7 +47,7 @@ void
 init_element (struct Element* this)
 {
   this->ops->save    = &save;
-  this->ops->load    = &load;
+  this->ops->load    = NULL;
   this->ops->delete  = NULL;
 
   this->data->parent = NULL;
@@ -68,6 +68,13 @@ struct Node
   struct Element*      super;
   struct Node_data*    data;
 };
+
+int
+load_node (struct Element* this, FILE* file)
+{
+  printf("load_node called");
+  return 0;
+}
 
 void
 delete_node (struct Element* this)
@@ -96,6 +103,7 @@ new_node()
   init_element(this->super);
   this->super->data->type_id = TYPE_NODE;
 
+  this->super->ops->load   = &load_node;
   this->super->ops->delete = &delete_node;
 
   this->data->question = NULL;
@@ -118,6 +126,12 @@ struct Leaf
   struct Element*   super;
   struct Leaf_data* data;
 };
+
+int
+load_leaf (struct Element* this, FILE* file)
+{
+  return 0;
+}
 
 void
 delete_leaf (struct Element* this)
@@ -144,6 +158,7 @@ new_leaf()
   init_element(this->super);
   this->super->data->type_id = TYPE_LEAF;
 
+  this->super->ops->load   = &load_leaf;
   this->super->ops->delete = &delete_leaf;
 
   this->data->name = NULL;

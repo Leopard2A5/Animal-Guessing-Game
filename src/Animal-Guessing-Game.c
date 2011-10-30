@@ -11,10 +11,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "structures.h"
+#include "util.h"
 
 int
 main(void)
 {
-  puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
+  load_tree("/home/leopard2a5/Desktop/test.dat");
+
   return EXIT_SUCCESS;
 }
