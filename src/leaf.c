@@ -22,7 +22,19 @@ load_leaf (void* pThis, FILE* file, struct Element* parent)
   this->leaf_data->name = malloc(sizeof(char) * length);
   fread(this->leaf_data->name, sizeof(char), length, file);
 
-  printf("read leaf '%s'\n", this->leaf_data->name);
+//  printf("read leaf '%s'\n", this->leaf_data->name);
+}
+
+void
+save_leaf(void* pThis, FILE* file)
+{
+  struct Leaf* this = (struct Leaf*)pThis;
+  this->ovr->save(this, file);
+
+  uint32_t length = get_length_of_string(this->leaf_data->name);
+  uint32_t nlength = htonl(length);
+  fwrite(&nlength, sizeof(uint32_t), 1, file);
+  fwrite(this->leaf_data->name, sizeof(char), length, file);
 }
 
 void
@@ -47,6 +59,8 @@ new_leaf(struct Element* parent, char* name)
   init_element(this, TYPE_LEAF, parent);
 
   this->ops->load          = &load_leaf;
+  this->ovr->save          = this->ops->save;
+  this->ops->save          = &save_leaf;
   this->ovr->delete        = this->ops->delete;
   this->ops->delete        = &delete_leaf;
 

@@ -19,4 +19,7 @@ save_tree(char* filepath, struct Element*);
 struct Element*
 build_element_from_type_from_file(FILE*);
 
+uint32_t
+get_length_of_string(char*);
+
 #endif /* UTIL_H_ */

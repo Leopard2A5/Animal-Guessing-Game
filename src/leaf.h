@@ -22,6 +22,7 @@ struct Leaf_data
 struct Leaf_override
 {
   void (*delete)(void*);
+  void (*save)  (void*, FILE*);
 };
 
 struct Leaf
@@ -34,6 +35,9 @@ struct Leaf
 
 void
 load_leaf (void*, FILE*, struct Element*);
+
+void
+save_leaf(void*, FILE*);
 
 void
 delete_leaf(void*);
