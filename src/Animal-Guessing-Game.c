@@ -15,6 +15,8 @@
 #include "util.h"
 
 struct Element* root;
+struct Element* actual_element;
+char animal[100];
 
 void
 cls(void)
@@ -35,8 +37,18 @@ void
 start_game(void)
 {
   printf("Please enter an animal:\n");
-  char animal[100];
   scanf("%99s", &animal[0]);
+  if (root == NULL)
+  {
+     actual_element = new_leaf();
+     init_element(actual_element);
+     actual_element->data = animal;
+     root = actual_element;
+  } else
+  {
+    actual_element = root;
+  }
+  //spiel in de wurzel beginnen
 }
 
 void
