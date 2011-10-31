@@ -25,11 +25,11 @@ load_node (void* pThis, FILE* file, struct Element* parent)
 
   // read yes branch
   this->node_data->yes = build_element_from_type_from_file(file);
-  this->node_data->yes->ops->load(this->node_data->yes, file, this);
+  this->node_data->yes->ops->load(this->node_data->yes, file, (struct Element*)this);
 
   // read no branch
   this->node_data->no = build_element_from_type_from_file(file);
-  this->node_data->no->ops->load(this->node_data->no, file, this);
+  this->node_data->no->ops->load(this->node_data->no, file, (struct Element*)this);
 
   printf("read node '%s'\n", this->node_data->question);
 }

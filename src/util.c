@@ -84,3 +84,19 @@ load_tree(char* filepath)
 
   return NULL;
 }
+
+void
+save_tree(char* filepath, struct Element* root)
+{
+  FILE* file = fopen(filepath, "wb");
+  if (file != NULL)
+    {
+      fprintf(file, "AGG0%x", htonl(0x01020304));
+
+      fclose(file);
+    }
+  else
+    {
+      printf("Could not open file '%s' for writing", filepath);
+    }
+}

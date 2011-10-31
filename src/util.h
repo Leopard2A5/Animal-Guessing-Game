@@ -13,6 +13,9 @@
 struct Element*
 load_tree(char* filepath);
 
+void
+save_tree(char* filepath, struct Element*);
+
 struct Element*
 build_element_from_type_from_file(FILE*);
 
