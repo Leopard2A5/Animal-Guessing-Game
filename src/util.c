@@ -10,7 +10,9 @@
 #include <inttypes.h>
 #include <string.h>
 #include <arpa/inet.h>
-#include "structures.h"
+#include "element.h"
+#include "node.h"
+#include "leaf.h"
 
 int
 check_header(FILE* file)
@@ -34,6 +36,27 @@ check_header(FILE* file)
 }
 
 struct Element*
+build_element_from_type_from_file(FILE* file)
+{
+  uint8_t type;
+  fread(&type, sizeof(uint8_t), 1, file);
+
+  if (type == 0)
+    {
+      return (struct Element*) new_node();
+    }
+  else if (type == 1)
+    {
+      return (struct Element*) new_leaf();
+    }
+  else
+    {
+      printf("read unknown type %d", type);
+      return NULL;
+    }
+}
+
+struct Element*
 load_tree(char* filepath)
 {
   FILE* file = fopen(filepath, "rb");
@@ -41,25 +64,7 @@ load_tree(char* filepath)
     {
       if (check_header(file))
         {
-          // type
-          uint8_t type = fread(&type, sizeof(uint8_t), 1, file);
-          type = ntohl(type);
-
-          struct Element* root = NULL;
-
-          if (type == 0)
-            {
-              root = (struct Element*)new_node();
-            }
-          else if (type == 1)
-            {
-              root = (struct Element*)new_leaf();
-            }
-          else
-            {
-              printf("read unknown type %d", type);
-              return NULL;
-            }
+          struct Element* root = build_element_from_type_from_file(file);
 
           root->ops->load(root, file);
         }
@@ -74,6 +79,8 @@ load_tree(char* filepath)
     {
       printf("Could not open file %s", filepath);
     }
+
+  printf("\n\n");
 
   return NULL;
 }
