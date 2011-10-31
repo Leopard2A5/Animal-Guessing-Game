@@ -14,7 +14,7 @@
 #include "structures.h"
 #include "util.h"
 
-Element* root;
+struct Element* root;
 
 void
 cls(void)
