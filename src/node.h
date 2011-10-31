@@ -25,6 +25,7 @@ struct Node_data
 struct Node_override
 {
   void (*delete)(void*);
+  void (*save)  (void*, FILE*);
 };
 
 struct Node
@@ -37,6 +38,9 @@ struct Node
 
 void
 load_node (void*, FILE*, struct Element*);
+
+void
+save_node(void*, FILE*);
 
 struct Node*
 new_node(struct Element*, char*);

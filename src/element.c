@@ -15,7 +15,8 @@
 void
 save (void* pThis, FILE* file)
 {
-
+  struct Element* this = (struct Element*)pThis;
+  fwrite(&(this->data->type_id), sizeof(uint8_t), 1, file);
 }
 
 void

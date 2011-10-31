@@ -31,7 +31,22 @@ load_node (void* pThis, FILE* file, struct Element* parent)
   this->node_data->no = build_element_from_type_from_file(file);
   this->node_data->no->ops->load(this->node_data->no, file, (struct Element*)this);
 
-  printf("read node '%s'\n", this->node_data->question);
+//  printf("read node '%s'\n", this->node_data->question);
+}
+
+void
+save_node(void* pThis, FILE* file)
+{
+  struct Node* this = (struct Node*)pThis;
+  this->ovr->save(this, file);
+
+  uint32_t length = get_length_of_string(this->node_data->question);
+  uint32_t nlength = htonl(length);
+  fwrite(&nlength, sizeof(uint32_t), 1, file);
+  fwrite(this->node_data->question, sizeof(char), length, file);
+
+  this->node_data->yes->ops->save(this->node_data->yes, file);
+  this->node_data->no->ops->save(this->node_data->no, file);
 }
 
 void
@@ -58,6 +73,8 @@ new_node(struct Element* parent, char* question)
   init_element(this, TYPE_NODE, parent);
 
   this->ops->load          = &load_node;
+  this->ovr->save          = this->ops->save;
+  this->ops->save          = &save_node;
   this->ovr->delete        = this->ops->delete;
   this->ops->delete        = &delete_node;
 

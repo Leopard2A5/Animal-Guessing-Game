@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
+#include <stdint.h>
 #include <string.h>
 #include <arpa/inet.h>
 #include "element.h"
@@ -105,4 +106,20 @@ save_tree(char* filepath, struct Element* root)
     {
       printf("Could not open file '%s' for writing", filepath);
     }
+}
+
+uint32_t
+get_length_of_string(char* text)
+{
+  uint32_t length = 0;
+
+  for (length = 0; length <= INT32_MAX; length++)
+    {
+      if (text[length] == '\0')
+        {
+          break;
+        }
+    }
+
+  return length;
 }
