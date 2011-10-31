@@ -24,30 +24,11 @@ load (struct Element* this, FILE* file)
   return 0;
 }
 
-struct Element_op
-{
-  int  (*save)  (struct Element*, FILE*);
-  int  (*load)  (struct Element*, FILE*);
-  void (*delete)(struct Element*);
-};
-
-struct Element_data
-{
-  uint8_t  type_id;
-  struct Element* parent;
-};
-
-struct Element
-{
-  struct Element_op* ops;
-  struct Element_data* data;
-};
-
 void
 init_element (struct Element* this)
 {
   this->ops->save    = &save;
-  this->ops->load    = NULL;
+  this->ops->load    = &load;
   this->ops->delete  = NULL;
 
   this->data->parent = NULL;
@@ -56,19 +37,6 @@ init_element (struct Element* this)
 /*
  * Node
  */
-struct Node_data
-{
-  struct Element* yes;
-  struct Element* no;
-  char*           question;
-};
-
-struct Node
-{
-  struct Element*      super;
-  struct Node_data*    data;
-};
-
 int
 load_node (struct Element* this, FILE* file)
 {
@@ -116,17 +84,6 @@ new_node()
 /*
  * Leaf
  */
-struct Leaf_data
-{
-  char* name;
-};
-
-struct Leaf
-{
-  struct Element*   super;
-  struct Leaf_data* data;
-};
-
 int
 load_leaf (struct Element* this, FILE* file)
 {

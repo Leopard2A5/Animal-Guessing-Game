@@ -12,28 +12,48 @@
 #define TYPE_LEAF 1
 
 #include <stdio.h>
+#include <inttypes.h>
 
 /*
  * Element
  */
 struct Element;
-struct Element_op;
 struct Element_data;
 
-int
-save (struct Element*, FILE*);
+struct Element_op
+{
+  int  (*save)  (struct Element*, FILE*);
+  int  (*load)  (struct Element*, FILE*);
+  void (*delete)(struct Element*);
+};
 
-void
-delete (struct Element*);
+struct Element_data
+{
+  uint8_t  type_id;
+  struct Element* parent;
+};
 
-void
-init_element (struct Element*);
+struct Element
+{
+  struct Element_op* ops;
+  struct Element_data* data;
+};
 
 /*
  * Node
  */
-struct Node;
-struct Node_data;
+struct Node_data
+{
+  struct Element* yes;
+  struct Element* no;
+  char*           question;
+};
+
+struct Node
+{
+  struct Element*      super;
+  struct Node_data*    data;
+};
 
 int
 load_node (struct Element*, FILE*);
@@ -44,11 +64,22 @@ new_node();
 /*
  * Leaf
  */
-struct Leaf;
-struct Leaf_data;
+struct Leaf_data
+{
+  char* name;
+};
+
+struct Leaf
+{
+  struct Element*   super;
+  struct Leaf_data* data;
+};
 
 int
 load_leaf (struct Element*, FILE*);
+
+void
+delete_leaf(struct Element*);
 
 struct Leaf*
 new_leaf();
