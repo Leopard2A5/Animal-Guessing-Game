@@ -33,12 +33,12 @@ struct Leaf
 };
 
 void
-load_leaf (void*, FILE*);
+load_leaf (void*, FILE*, struct Element*);
 
 void
 delete_leaf(void*);
 
 struct Leaf*
-new_leaf();
+new_leaf(struct Element*, char*);
 
 #endif /* LEAF_H_ */

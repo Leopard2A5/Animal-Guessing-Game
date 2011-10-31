@@ -28,7 +28,7 @@ delete(void* pThis)
 }
 
 void
-init_element (void* pThis)
+init_element (void* pThis, uint8_t type, struct Element* parent)
 {
   struct Element* this = (struct Element*)pThis;
   this->ops  = malloc(sizeof(struct Element_op));
@@ -38,5 +38,6 @@ init_element (void* pThis)
   this->ops->load    = NULL;
   this->ops->delete  = &delete;
 
-  this->data->parent = NULL;
+  this->data->type_id = type;
+  this->data->parent = parent;
 }

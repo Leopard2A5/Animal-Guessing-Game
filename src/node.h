@@ -36,9 +36,9 @@ struct Node
 };
 
 void
-load_node (void*, FILE*);
+load_node (void*, FILE*, struct Element*);
 
 struct Node*
-new_node();
+new_node(struct Element*, char*);
 
 #endif /* NODE_H_ */

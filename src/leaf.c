@@ -10,9 +10,10 @@
 #include <arpa/inet.h>
 
 void
-load_leaf (void* pThis, FILE* file)
+load_leaf (void* pThis, FILE* file, struct Element* parent)
 {
   struct Leaf* this = (struct Leaf*)pThis;
+  this->data->parent = parent;
 
   uint32_t length;
   fread(&length, sizeof(uint32_t), 1, file);
@@ -35,7 +36,7 @@ delete_leaf (void* pThis)
 }
 
 struct Leaf*
-new_leaf()
+new_leaf(struct Element* parent, char* name)
 {
   struct Leaf* this = malloc(sizeof(struct Leaf));
   this->ops         = malloc(sizeof(struct Element_op*));
@@ -43,14 +44,13 @@ new_leaf()
   this->leaf_data   = malloc(sizeof(struct Leaf_data));
   this->ovr         = malloc(sizeof(struct Leaf_override));
 
-  init_element(this);
-  this->data->type_id = TYPE_LEAF;
+  init_element(this, TYPE_LEAF, parent);
 
   this->ops->load          = &load_leaf;
   this->ovr->delete        = this->ops->delete;
   this->ops->delete        = &delete_leaf;
 
-  this->leaf_data->name = NULL;
+  this->leaf_data->name = name;
 
   return this;
 }

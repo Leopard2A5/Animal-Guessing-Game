@@ -11,9 +11,10 @@
 #include <arpa/inet.h>
 
 void
-load_node (void* pThis, FILE* file)
+load_node (void* pThis, FILE* file, struct Element* parent)
 {
   struct Node* this = (struct Node*)pThis;
+  this->data->parent = parent;
 
   uint32_t length;
   fread(&length, sizeof(uint32_t), 1, file);
@@ -24,11 +25,11 @@ load_node (void* pThis, FILE* file)
 
   // read yes branch
   this->node_data->yes = build_element_from_type_from_file(file);
-  this->node_data->yes->ops->load(this->node_data->yes, file);
+  this->node_data->yes->ops->load(this->node_data->yes, file, this);
 
   // read no branch
   this->node_data->no = build_element_from_type_from_file(file);
-  this->node_data->no->ops->load(this->node_data->no, file);
+  this->node_data->no->ops->load(this->node_data->no, file, this);
 
   printf("read node '%s'\n", this->node_data->question);
 }
@@ -46,7 +47,7 @@ delete_node(void* pThis)
 }
 
 struct Node*
-new_node()
+new_node(struct Element* parent, char* question)
 {
   struct Node* this = malloc(sizeof(struct Node));
   this->ops         = malloc(sizeof(struct Element_op));
@@ -54,14 +55,13 @@ new_node()
   this->node_data   = malloc(sizeof(struct Node_data));
   this->ovr         = malloc(sizeof(struct Node_override));
 
-  init_element(this);
-  this->data->type_id = TYPE_NODE;
+  init_element(this, TYPE_NODE, parent);
 
   this->ops->load          = &load_node;
   this->ovr->delete        = this->ops->delete;
   this->ops->delete        = &delete_node;
 
-  this->node_data->question = NULL;
+  this->node_data->question = question;
   this->node_data->yes      = NULL;
   this->node_data->no       = NULL;
 

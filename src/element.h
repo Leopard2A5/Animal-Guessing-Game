@@ -23,7 +23,7 @@ struct Element_data;
 struct Element_op
 {
   void (*save)  (void*, FILE*);
-  void (*load)  (void*, FILE*);
+  void (*load)  (void*, FILE*, struct Element*);
   void (*delete)(void*);
 };
 
@@ -40,6 +40,6 @@ struct Element
 };
 
 void
-init_element (void* this);
+init_element (void* this, uint8_t type, struct Element* parent);
 
 #endif /* ELEMENT_H_ */

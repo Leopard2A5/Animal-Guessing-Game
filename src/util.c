@@ -43,11 +43,11 @@ build_element_from_type_from_file(FILE* file)
 
   if (type == 0)
     {
-      return (struct Element*) new_node();
+      return (struct Element*) new_node(NULL, NULL);
     }
   else if (type == 1)
     {
-      return (struct Element*) new_leaf();
+      return (struct Element*) new_leaf(NULL, NULL);
     }
   else
     {
@@ -66,7 +66,7 @@ load_tree(char* filepath)
         {
           struct Element* root = build_element_from_type_from_file(file);
 
-          root->ops->load(root, file);
+          root->ops->load(root, file, NULL);
         }
       else
         {
