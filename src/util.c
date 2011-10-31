@@ -59,12 +59,14 @@ build_element_from_type_from_file(FILE* file)
 struct Element*
 load_tree(char* filepath)
 {
+  struct Element* root = NULL;
   FILE* file = fopen(filepath, "rb");
+
   if (file != NULL)
     {
       if (check_header(file))
         {
-          struct Element* root = build_element_from_type_from_file(file);
+          root = build_element_from_type_from_file(file);
 
           root->ops->load(root, file, NULL);
         }
@@ -82,7 +84,7 @@ load_tree(char* filepath)
 
   printf("\n\n");
 
-  return NULL;
+  return root;
 }
 
 void
@@ -91,7 +93,11 @@ save_tree(char* filepath, struct Element* root)
   FILE* file = fopen(filepath, "wb");
   if (file != NULL)
     {
-      fprintf(file, "AGG0%x", htonl(0x01020304));
+      fprintf(file, "AGG0");
+      uint8_t ctrl[] = {0x01, 0x02, 0x03, 0x04};
+      fwrite(ctrl, sizeof(uint8_t), 4, file);
+
+      root->ops->save(root, file);
 
       fclose(file);
     }
