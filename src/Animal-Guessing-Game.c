@@ -15,6 +15,7 @@
 #include "node.h"
 #include "leaf.h"
 #include "util.h"
+#include <string.h>
 
 struct Element* root;
 char animal[100];
@@ -92,8 +93,8 @@ running_game(struct Element* element)
       {
         read_animal_name(animal); // Tier hinzufuegen prüfen ob element == root
         read_animal_characteristics(question);
-        struct Node* tmpNode = insert_new_leaf((struct Leaf*) element, animal, question);
-        if (root==element)  root=tmpNode;
+        struct Node* tmpNode = insert_new_leaf((struct Leaf*) element, copy_string(animal), copy_string(question));
+        if (root==element)  root=(struct Element*)tmpNode;
       }
     }
 }
@@ -104,8 +105,8 @@ start_game(void)
   if (root == NULL)
   {
     read_animal_name(animal);
-    struct Node* node = new_leaf(NULL,animal);
-    root = (struct Element* ) node;
+    struct Leaf* leaf = new_leaf(NULL, copy_string(animal));
+    root = (struct Element* ) leaf;
   }
   running_game(root);
 }

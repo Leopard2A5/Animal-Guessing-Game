@@ -115,22 +115,6 @@ save_tree(char* filepath, struct Element* root)
     }
 }
 
-uint32_t
-get_length_of_string(char* text)
-{
-  uint32_t length = 0;
-
-  for (length = 0; length <= INT32_MAX; length++)
-    {
-      if (text[length] == '\0')
-        {
-          break;
-        }
-    }
-
-  return length;
-}
-
 struct Node*
 insert_new_leaf(struct Leaf* current, char* name, char* question)
 {
@@ -163,4 +147,14 @@ insert_new_leaf(struct Leaf* current, char* name, char* question)
   current->ops->delete(current);
 
   return node;
+}
+
+char*
+copy_string(char* string)
+{
+  size_t len = strlen(string);
+  char* new = malloc(sizeof(char) * len);
+  strcpy(new, string); // rather use strlcpy but it's not in my string.h
+
+  return new;
 }

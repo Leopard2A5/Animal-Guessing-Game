@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "util.h"
 #include <arpa/inet.h>
+#include <string.h>
 
 /**
  * loads a node from the file
@@ -52,7 +53,7 @@ save_node(void* pThis, FILE* file)
   this->ovr->save(this, file);
 
   // get the length and convert to little-endian
-  uint32_t length = get_length_of_string(this->node_data->question);
+  uint32_t length = strlen(this->node_data->question);
   uint32_t nlength = htonl(length);
   // write the length
   fwrite(&nlength, sizeof(uint32_t), 1, file);

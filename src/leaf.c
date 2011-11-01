@@ -6,6 +6,8 @@
  */
 
 #include "leaf.h"
+#include "util.h"
+#include <string.h>
 #include <stdlib.h>
 #include <arpa/inet.h>
 
@@ -42,7 +44,7 @@ save_leaf(void* pThis, FILE* file)
   this->ovr->save(this, file);
 
   // get the length of the name
-  uint32_t length = get_length_of_string(this->leaf_data->name);
+  uint32_t length = strlen(this->leaf_data->name);
   // convert to little-endian
   uint32_t nlength = htonl(length);
 

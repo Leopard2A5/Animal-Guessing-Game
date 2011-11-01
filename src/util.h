@@ -9,6 +9,7 @@
 #define UTIL_H_
 
 #include "element.h"
+#include "leaf.h"
 
 /**
  * loads a tree of element objects from the given file
@@ -31,15 +32,12 @@ struct Element*
 build_element_from_type_from_file(FILE*);
 
 /**
- * utility function to compute the length of the given char*
- */
-uint32_t
-get_length_of_string(char*);
-
-/**
  * inserts a new leaf into the tree
  */
 struct Node*
 insert_new_leaf(struct Leaf*, char*, char*);
+
+char*
+copy_string(char*);
 
 #endif /* UTIL_H_ */
