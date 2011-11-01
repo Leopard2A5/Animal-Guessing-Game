@@ -143,6 +143,7 @@ save_game(void)
 void
 game_menu(void)
 {
+  cls();
   char input;
   do
     {
