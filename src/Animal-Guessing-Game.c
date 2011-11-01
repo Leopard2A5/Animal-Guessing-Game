@@ -88,7 +88,12 @@ running_game(struct Element* element)
       struct Leaf* actual_element = (struct Leaf*) element;
       printf("War es ein %s ?\n", actual_element ->leaf_data ->name);
       answer = read_single_Char();
-      if (answer=='Y') game_menu(); //
+      if (answer=='Y')
+      {
+        printf("%s was found!",actual_element ->leaf_data ->name);
+        read_single_Char();
+        game_menu(); //
+      }
       if (answer=='N')
       {
         read_animal_name(animal); // Tier hinzufuegen prüfen ob element == root
