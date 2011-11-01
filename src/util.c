@@ -130,3 +130,37 @@ get_length_of_string(char* text)
 
   return length;
 }
+
+struct Node*
+insertNewLeaf(struct Leaf* current, char* name, char* question)
+{
+  struct Node* parent = current->data->parent;
+  // build new node
+  struct Node* node = new_node(parent, question);
+
+  // tell the parent it's new child
+  if (parent != NULL)
+    {
+      if (parent->node_data->yes == current)
+        {
+          parent->node_data->yes = node;
+        }
+      if (parent->node_data->no == current)
+        {
+          parent->node_data->no = node;
+        }
+    }
+
+  // construct the new yes branch
+  struct Leaf* yes = new_leaf(node, name);
+  node->node_data->yes = yes;
+
+  // construct the new no branch
+  struct Leaf* no  = new_leaf(node, current->leaf_data->name);
+  node->node_data->no = no;
+
+  // free the memory for the now obsolete leaf
+  current->ops->delete;
+
+  return node;
+}
