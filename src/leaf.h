@@ -1,5 +1,5 @@
 /*
- * LEAF.h
+ * leaf.h
  *
  *  Created on: 29.10.2011
  *      Author: leopard2a5
@@ -8,23 +8,29 @@
 #ifndef LEAF_H_
 #define LEAF_H_
 
-#define TYPE_NODE 0
-#define TYPE_LEAF 1
-
 #include <stdio.h>
 #include "element.h"
 
+/**************************
+ * Data members
+ **************************/
 struct Leaf_data
 {
   char* name;
 };
 
+/**************************
+ * Override function pointers
+ **************************/
 struct Leaf_override
 {
   void (*delete)(void*);
   void (*save)  (void*, FILE*);
 };
 
+/**************************
+ * Leaf struct
+ **************************/
 struct Leaf
 {
   struct Element_op*    ops;
@@ -33,6 +39,9 @@ struct Leaf
   struct Leaf_override* ovr;
 };
 
+/**************************
+ * class methods
+ **************************/
 void
 load_leaf (void*, FILE*, struct Element*);
 

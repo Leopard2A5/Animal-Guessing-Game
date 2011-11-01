@@ -15,6 +15,9 @@
 #include "node.h"
 #include "leaf.h"
 
+/**
+ * checks whether the given file has the correct header
+ */
 int
 check_header(FILE* file)
 {
@@ -39,6 +42,7 @@ check_header(FILE* file)
 struct Element*
 build_element_from_type_from_file(FILE* file)
 {
+  // read the type id
   uint8_t type;
   fread(&type, sizeof(uint8_t), 1, file);
 
@@ -69,6 +73,7 @@ load_tree(char* filepath)
         {
           root = build_element_from_type_from_file(file);
 
+          // load element tree recursively
           root->ops->load(root, file, NULL);
         }
       else
@@ -94,10 +99,12 @@ save_tree(char* filepath, struct Element* root)
   FILE* file = fopen(filepath, "wb");
   if (file != NULL)
     {
+      // write the header
       fprintf(file, "AGG0");
       uint8_t ctrl[] = {0x01, 0x02, 0x03, 0x04};
       fwrite(ctrl, sizeof(uint8_t), 4, file);
 
+      // save the tree recursively
       root->ops->save(root, file);
 
       fclose(file);
