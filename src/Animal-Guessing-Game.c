@@ -1,10 +1,9 @@
 /*
  ============================================================================
  Name        : Animal-Guessing-Game.c
- Author      : 
+ Author      : R.Perschon; C.Dresske
  Version     :
- Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
+ Description : Main program with UI
  ============================================================================
  */
 
@@ -29,11 +28,11 @@ game_menu(void);
 
 void
 cls(void)
-{
-  printf("\033[2J"); //terminalsequenz zum loeschen des inhalts
+{ /*Terminalsequence to clear screen*/
+  printf("\033[2J");
 }
 
-/* Flushes first \n from Input-Stream */
+/* flushes first \n from Input-Stream */
 void
 eatToNL(FILE * inputStream)
 {
@@ -51,7 +50,7 @@ read_single_Char(void)
     {
       printf("\n>");
       scanf("%99s", &input[0]);
-      input[0] = toupper(input[0]); // um gross/kleinschreibung zu eliminieren
+      input[0] = toupper(input[0]); /*eliminates lower/uppercase problems*/
       eatToNL(stdin);
     }
   while (!((input[0] == 'N') | (input[0] == 'Y') | (input[0] == '1')
@@ -74,15 +73,14 @@ read_animal_characteristics(char* input)
   printf("Please enter a question to distinguish:\n");
   printf(">");
   getline(&input, &nbytes, stdin);
-  input[strlen(input) - 1] = '\0'; //ersetzt das abschliessende
-  //\n durch ein null-byte
+  input[strlen(input) - 1] = '\0'; /*erases useless \n from char array*/
 }
 
 void
 running_game(struct Element* element)
 {
   char answer;
-  if ((element -> data -> type_id) == 0)
+  if ((element -> data -> type_id) == 0) /*if node*/
     {
       struct Node* actual_element = (struct Node*) element;
       printf("%s [Y/N]", actual_element -> node_data -> question);
@@ -92,7 +90,7 @@ running_game(struct Element* element)
       if (answer == 'N')
         running_game(actual_element->node_data->no);
     }
-  if ((element -> data -> type_id) == 1)
+  if ((element -> data -> type_id) == 1) /*if leaf*/
     {
       struct Leaf* actual_element = (struct Leaf*) element;
       printf("Was it a %s ?[Y/N]", actual_element ->leaf_data ->name);
@@ -105,12 +103,12 @@ running_game(struct Element* element)
           game_menu(); //
         }
       if (answer == 'N')
-        {
-          read_animal_name(animal); // Tier hinzufuegen prüfen ob element == root
+        { /*insert a new animal and rebuild the tree*/
+          read_animal_name(animal);
           read_animal_characteristics(question);
           struct Node* tmpNode = insert_new_leaf((struct Leaf*) element,
               copy_string(animal), copy_string(question));
-          if (root == element)
+          if (root == element) /*change root if only one leaf was present*/
             root = (struct Element*) tmpNode;
         }
     }
@@ -120,7 +118,7 @@ void
 start_game(void)
 {
   if (root == NULL)
-    {
+    { /*in case tree was empty*/
       read_animal_name(animal);
       struct Leaf* leaf = new_leaf(NULL, copy_string(animal));
       root = (struct Element*) leaf;
