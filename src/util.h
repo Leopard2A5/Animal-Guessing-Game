@@ -40,6 +40,6 @@ get_length_of_string(char*);
  * inserts a new leaf into the tree
  */
 struct Node*
-insertNewLeaf(struct Leaf*, char*, char*);
+insert_new_leaf(struct Leaf*, char*, char*);
 
 #endif /* UTIL_H_ */

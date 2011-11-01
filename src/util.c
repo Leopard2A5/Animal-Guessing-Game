@@ -132,7 +132,7 @@ get_length_of_string(char* text)
 }
 
 struct Node*
-insertNewLeaf(struct Leaf* current, char* name, char* question)
+insert_new_leaf(struct Leaf* current, char* name, char* question)
 {
   struct Node* parent = current->data->parent;
   // build new node

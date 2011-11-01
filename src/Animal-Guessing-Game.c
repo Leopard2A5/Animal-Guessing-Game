@@ -37,32 +37,39 @@ read_single_Char(void)
 }
 
 void
+read_animal_name(char* input)
+{
+  printf("Please enter the animal name:");
+  scanf("%99s",  &input[0]);
+}
+
+void
 running_game(struct Element* element)
 {
   char answer;
   if ((element -> data -> type_id) == 0)
     {
-      struct Node* actual_node = (struct Node*) element;
-      printf("%s \n", actual_node -> node_data -> question );
+      struct Node* actual_element = (struct Node*) element;
+      printf("%s \n", actual_element -> node_data -> question );
       answer = read_single_Char();
-      if (answer=='Y') running_game(actual_node->node_data->yes);
-      if (answer=='N') running_game(actual_node->node_data->no);
+      if (answer=='Y') running_game(actual_element->node_data->yes);
+      if (answer=='N') running_game(actual_element->node_data->no);
     }
   if ((element -> data -> type_id) == 1)
     {
-      struct Leaf* actual_node = (struct Leaf*) element;
-      printf("War es ein %s ?\n", actual_node ->leaf_data ->name);
+      struct Leaf* actual_element = (struct Leaf*) element;
+      printf("War es ein %s ?\n", actual_element ->leaf_data ->name);
       answer = read_single_Char();
       if (answer=='Y') start_game(); //
-      if (answer=='N') ; // Tier hinzufuegen
+      if (answer=='N') ; // Tier hinzufuegen prüfen ob element == root
     }
 }
 
 void
 start_game(void)
 {
-  printf("Please enter an animal:\n");
-  scanf("%99s", &animal[0]);
+  read_animal_name(animal);
+  printf("%s",animal);
   if (root == NULL)
   {
     //leeres Leaf mit dem vom benutzer eingegebenen Namen anlegen
