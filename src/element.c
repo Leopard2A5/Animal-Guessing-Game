@@ -1,5 +1,5 @@
 /*
- * structures.c
+ * element.c
  *
  *  Created on: 29.10.2011
  *      Author: leopard2a5
@@ -9,16 +9,21 @@
 #include <inttypes.h>
 #include <stdlib.h>
 
-/*
- * Element
+/**
+ * writes the type id to the file
  */
 void
 save (void* pThis, FILE* file)
 {
   struct Element* this = (struct Element*)pThis;
+
+  // write the type id
   fwrite(&(this->data->type_id), sizeof(uint8_t), 1, file);
 }
 
+/**
+ * frees for the element specific data allocated memory
+ */
 void
 delete(void* pThis)
 {
@@ -28,6 +33,9 @@ delete(void* pThis)
   free(this);
 }
 
+/**
+ * allocates memory and initializes element-specific data
+ */
 void
 init_element (void* pThis, uint8_t type, struct Element* parent)
 {
@@ -40,5 +48,5 @@ init_element (void* pThis, uint8_t type, struct Element* parent)
   this->ops->delete  = &delete;
 
   this->data->type_id = type;
-  this->data->parent = parent;
+  this->data->parent  = parent;
 }

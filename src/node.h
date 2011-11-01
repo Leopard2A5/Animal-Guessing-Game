@@ -1,5 +1,5 @@
 /*
- * NODE.h
+ * node.h
  *
  *  Created on: 29.10.2011
  *      Author: leopard2a5
@@ -8,13 +8,13 @@
 #ifndef NODE_H_
 #define NODE_H_
 
-#define TYPE_NODE 0
-#define TYPE_LEAF 1
-
 #include <stdio.h>
 #include <inttypes.h>
 #include "element.h"
 
+/**************************
+ * data members
+ **************************/
 struct Node_data
 {
   struct Element* yes;
@@ -22,12 +22,18 @@ struct Node_data
   char*           question;
 };
 
+/**************************
+ * override methods
+ **************************/
 struct Node_override
 {
   void (*delete)(void*);
   void (*save)  (void*, FILE*);
 };
 
+/**************************
+ * Node struct
+ **************************/
 struct Node
 {
   struct Element_op*    ops;
