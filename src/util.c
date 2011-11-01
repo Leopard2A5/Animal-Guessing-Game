@@ -134,33 +134,33 @@ get_length_of_string(char* text)
 struct Node*
 insert_new_leaf(struct Leaf* current, char* name, char* question)
 {
-  struct Node* parent = current->data->parent;
+  struct Node* parent = (struct Node*)current->data->parent;
   // build new node
-  struct Node* node = new_node(parent, question);
+  struct Node* node = new_node((struct Element*)parent, question);
 
   // tell the parent it's new child
   if (parent != NULL)
     {
-      if (parent->node_data->yes == current)
+      if (parent->node_data->yes == (struct Element*)current)
         {
-          parent->node_data->yes = node;
+          parent->node_data->yes = (struct Element*)node;
         }
-      if (parent->node_data->no == current)
+      if (parent->node_data->no == (struct Element*)current)
         {
-          parent->node_data->no = node;
+          parent->node_data->no = (struct Element*)node;
         }
     }
 
   // construct the new yes branch
-  struct Leaf* yes = new_leaf(node, name);
-  node->node_data->yes = yes;
+  struct Leaf* yes = new_leaf((struct Element*)node, name);
+  node->node_data->yes = (struct Element*)yes;
 
   // construct the new no branch
-  struct Leaf* no  = new_leaf(node, current->leaf_data->name);
-  node->node_data->no = no;
+  struct Leaf* no  = new_leaf((struct Element*)node, current->leaf_data->name);
+  node->node_data->no = (struct Element*)no;
 
   // free the memory for the now obsolete leaf
-  current->ops->delete;
+  current->ops->delete(current);
 
   return node;
 }
