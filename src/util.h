@@ -32,12 +32,15 @@ struct Element*
 build_element_from_type_from_file(FILE*);
 
 /**
+ * copies as string
+ */
+char*
+copy_string(char*);
+
+/**
  * inserts a new leaf into the tree
  */
 struct Node*
 insert_new_leaf(struct Leaf*, char*, char*);
-
-char*
-copy_string(char*);
 
 #endif /* UTIL_H_ */

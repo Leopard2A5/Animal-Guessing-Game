@@ -115,6 +115,16 @@ save_tree(char* filepath, struct Element* root)
     }
 }
 
+char*
+copy_string(char* string)
+{
+  size_t len = strlen(string);
+  char* new = malloc(sizeof(char) * len);
+  strcpy(new, string); // rather use strlcpy but it's not in my string.h
+
+  return new;
+}
+
 struct Node*
 insert_new_leaf(struct Leaf* current, char* name, char* question)
 {
@@ -140,21 +150,12 @@ insert_new_leaf(struct Leaf* current, char* name, char* question)
   node->node_data->yes = (struct Element*)yes;
 
   // construct the new no branch
-  struct Leaf* no  = new_leaf((struct Element*)node, current->leaf_data->name);
+  struct Leaf* no  = new_leaf((struct Element*)node,
+                                  copy_string(current->leaf_data->name));
   node->node_data->no = (struct Element*)no;
 
   // free the memory for the now obsolete leaf
   current->ops->delete(current);
 
   return node;
-}
-
-char*
-copy_string(char* string)
-{
-  size_t len = strlen(string);
-  char* new = malloc(sizeof(char) * len);
-  strcpy(new, string); // rather use strlcpy but it's not in my string.h
-
-  return new;
 }
