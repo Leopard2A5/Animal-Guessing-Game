@@ -51,12 +51,10 @@ struct Leaf*
 new_leaf(struct Element* parent, char* name)
 {
   struct Leaf* this = malloc(sizeof(struct Leaf));
-  this->ops         = malloc(sizeof(struct Element_op*));
-  this->data        = malloc(sizeof(struct Element_data*));
+  init_element(this, TYPE_LEAF, parent);
+
   this->leaf_data   = malloc(sizeof(struct Leaf_data));
   this->ovr         = malloc(sizeof(struct Leaf_override));
-
-  init_element(this, TYPE_LEAF, parent);
 
   this->ops->load          = &load_leaf;
   this->ovr->save          = this->ops->save;

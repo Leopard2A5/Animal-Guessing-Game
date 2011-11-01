@@ -65,12 +65,10 @@ struct Node*
 new_node(struct Element* parent, char* question)
 {
   struct Node* this = malloc(sizeof(struct Node));
-  this->ops         = malloc(sizeof(struct Element_op));
-  this->data        = malloc(sizeof(struct Element_data));
+  init_element(this, TYPE_NODE, parent);
+
   this->node_data   = malloc(sizeof(struct Node_data));
   this->ovr         = malloc(sizeof(struct Node_override));
-
-  init_element(this, TYPE_NODE, parent);
 
   this->ops->load          = &load_node;
   this->ovr->save          = this->ops->save;
