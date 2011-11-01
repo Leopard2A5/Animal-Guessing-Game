@@ -45,10 +45,14 @@ char
 read_single_Char(void)
 {
   char input[100];
-  printf(">");
-  scanf("%99s", &input[0]);
-  input[0]=toupper(input[0]); // um gross/kleinschreibung zu eliminieren
-  eatToNL(stdin);
+  do
+    {
+    printf("\n>");
+    scanf("%99s", &input[0]);
+    input[0]=toupper(input[0]); // um gross/kleinschreibung zu eliminieren
+    eatToNL(stdin);
+    } while (!((input[0]=='N')|(input[0]=='Y')|(input[0]=='1')|
+                (input[0]=='2')|(input[0]=='3')));
   return input[0];
 }
 
@@ -78,7 +82,7 @@ running_game(struct Element* element)
   if ((element -> data -> type_id) == 0)
     {
       struct Node* actual_element = (struct Node*) element;
-      printf("%s \n", actual_element -> node_data -> question );
+      printf("%s [Y/N]", actual_element -> node_data -> question );
       answer = read_single_Char();
       if (answer=='Y') running_game(actual_element->node_data->yes);
       if (answer=='N') running_game(actual_element->node_data->no);
@@ -86,11 +90,11 @@ running_game(struct Element* element)
   if ((element -> data -> type_id) == 1)
     {
       struct Leaf* actual_element = (struct Leaf*) element;
-      printf("War es ein %s ?\n", actual_element ->leaf_data ->name);
+      printf("Was it a %s ?[Y/N]", actual_element ->leaf_data ->name);
       answer = read_single_Char();
       if (answer=='Y')
       {
-        printf("%s was found!",actual_element ->leaf_data ->name);
+        printf("%s was found!\nContinue [Y]",actual_element ->leaf_data ->name);
         read_single_Char();
         game_menu(); //
       }
@@ -137,7 +141,7 @@ game_menu(void)
     printf("Animal Guessing Game - Menu\n\n");
     printf("[1] Start a new Game\n");
     printf("[2] Save\n");
-    printf("[3] Exit\n");
+    printf("[3] Exit");
     input=read_single_Char();
     switch(input)
     {
